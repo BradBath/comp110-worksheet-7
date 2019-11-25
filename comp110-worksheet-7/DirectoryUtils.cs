@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Linq;
-using System.Diagnostics;
-
-using System.Threading.Tasks;
 
 namespace comp110_worksheet_7
 {
@@ -114,7 +108,7 @@ namespace comp110_worksheet_7
                 FileInfo info = new FileInfo(name);
                 //Add their length to size
                 if(info.Length==size)
-                    filesOfSize.Add(info.FullName);
+                    filesOfSize.Add(info.Name);
             }
             //Return size
             return filesOfSize;
