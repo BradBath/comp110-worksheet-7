@@ -64,7 +64,7 @@ namespace comp110_worksheet_7
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name);
-                fileSizes.Add(new Tuple<string, long>(info.Name,info.Length));
+                fileSizes.Add(new Tuple<string, long>("/" + info.Directory.Name + "/" + info.Name, info.Length));
             }
             //Sort the list by the sizes (Item2 of the tuple)
             fileSizes.Sort(
@@ -85,7 +85,7 @@ namespace comp110_worksheet_7
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name);
-                fileSizes.Add(new Tuple<string, long>(info.Name, info.Length));
+                fileSizes.Add(new Tuple<string, long>("/" + info.Directory.Name + "/" + info.Name, info.Length));
             }
             //Sort the list by the sizes (Item2 of the tuple)
             fileSizes.Sort(
@@ -108,7 +108,7 @@ namespace comp110_worksheet_7
                 FileInfo info = new FileInfo(name);
                 //Add their length to size
                 if(info.Length==size)
-                    filesOfSize.Add(info.Name);
+                    filesOfSize.Add("/"+info.Directory.Parent.Name+"/"+info.Directory.Name+"/"+info.Name);
             }
             //Return size
             return filesOfSize;
