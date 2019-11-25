@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Linq;
+using System.Diagnostics;
+
 using System.Threading.Tasks;
 
 namespace comp110_worksheet_7
@@ -24,37 +27,97 @@ namespace comp110_worksheet_7
 		// Return the total size, in bytes, of all the files below the given directory
 		public static long GetTotalSize(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            //Recursively get all directories via SearchOption.AllDirectories
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            long size = 0;
+            foreach(string name in files)
+            {
+                FileInfo info = new FileInfo(name);
+                //Add their length to size
+                size += info.Length;
+            }
+            //Return size
+            return size;
+        }
 
 		// Return the number of files (not counting directories) below the given directory
 		public static int CountFiles(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            //Return the length of the array returned by GetFiles
+            return Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories).Length;
+        }
 
-		// Return the nesting depth of the given directory. A directory containing only files (no subdirectories) has a depth of 0.
-		public static int GetDepth(string directory)
+        // Return the nesting depth of the given directory. A directory containing only files (no subdirectories) has a depth of 0.
+        public static int GetDepth(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            //Return 0 if directory is null
+            if (string.IsNullOrEmpty(directory))
+                return 0;
+            //Return 1 if there's no parent
+            DirectoryInfo parent = Directory.GetParent(directory);
+            if (parent == null)
+                return 1;
+            
+            return GetDepth(parent.FullName) + 1;
+        }
 
 		// Get the path and size (in bytes) of the smallest file below the given directory
 		public static Tuple<string, long> GetSmallestFile(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            List<Tuple<string, long>> fileSizes = new List<Tuple<string, long>>();
+            //Add the name of the files and their size to the list
+            foreach (string name in files)
+            {
+                FileInfo info = new FileInfo(name);
+                fileSizes.Add(new Tuple<string, long>(info.Name,info.Length));
+            }
+            //Sort the list by the sizes (Item2 of the tuple)
+            fileSizes.Sort(
+                delegate (Tuple<string,long> a,Tuple<string,long> b)
+                {
+                    return a.Item2.CompareTo(b.Item2);
+                }
+            );
+            return fileSizes[0]; //Return the first index since it will be the largest after sorting.
+        }
 
-		// Get the path and size (in bytes) of the largest file below the given directory
-		public static Tuple<string, long> GetLargestFile(string directory)
+        // Get the path and size (in bytes) of the largest file below the given directory
+        public static Tuple<string, long> GetLargestFile(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            List<Tuple<string, long>> fileSizes = new List<Tuple<string, long>>();
+            //Add the name of the files and their size to the list
+            foreach (string name in files)
+            {
+                FileInfo info = new FileInfo(name);
+                fileSizes.Add(new Tuple<string, long>(info.Name, info.Length));
+            }
+            //Sort the list by the sizes (Item2 of the tuple)
+            fileSizes.Sort(
+                delegate (Tuple<string, long> a, Tuple<string, long> b)
+                {
+                    return b.Item2.CompareTo(a.Item2);
+                }
+            );
+            return fileSizes[0]; //Return the first index since it will be the largest after sorting.
+        }
 
-		// Get all files whose size is equal to the given value (in bytes) below the given directory
-		public static IEnumerable<string> GetFilesOfSize(string directory, long size)
+        // Get all files whose size is equal to the given value (in bytes) below the given directory
+        public static IEnumerable<string> GetFilesOfSize(string directory, long size)
 		{
-			throw new NotImplementedException();
-		}
-	}
+            string[] files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            List<string> filesOfSize = new List<string>();
+            
+            foreach (string name in files)
+            {
+                FileInfo info = new FileInfo(name);
+                //Add their length to size
+                if(info.Length==size)
+                    filesOfSize.Add(info.FullName);
+            }
+            //Return size
+            return filesOfSize;
+        }
+    }
 }
