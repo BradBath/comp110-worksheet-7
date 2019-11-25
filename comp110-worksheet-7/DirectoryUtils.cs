@@ -6,6 +6,9 @@ namespace comp110_worksheet_7
 {
 	public static class DirectoryUtils
 	{
+
+
+
 		// Return the size, in bytes, of the given file
 		public static long GetFileSize(string filePath)
 		{
@@ -64,7 +67,7 @@ namespace comp110_worksheet_7
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name);
-                fileSizes.Add(new Tuple<string, long>("/" + info.Directory.Name + "/" + info.Name, info.Length));
+                fileSizes.Add(new Tuple<string, long>(info.FullName, info.Length));
             }
             //Sort the list by the sizes (Item2 of the tuple)
             fileSizes.Sort(
@@ -85,7 +88,7 @@ namespace comp110_worksheet_7
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name);
-                fileSizes.Add(new Tuple<string, long>("/" + info.Directory.Name + "/" + info.Name, info.Length));
+                fileSizes.Add(new Tuple<string, long>(info.FullName, info.Length));
             }
             //Sort the list by the sizes (Item2 of the tuple)
             fileSizes.Sort(
@@ -108,7 +111,7 @@ namespace comp110_worksheet_7
                 FileInfo info = new FileInfo(name);
                 //Add their length to size
                 if(info.Length==size)
-                    filesOfSize.Add("/"+info.Directory.Parent.Name+"/"+info.Directory.Name+"/"+info.Name);
+                    filesOfSize.Add(info.FullName);
             }
             //Return size
             return filesOfSize;
